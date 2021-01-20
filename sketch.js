@@ -1,11 +1,9 @@
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
-
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-var packageBody,ground;
-var engine, world;
 
 function preload()
 {
@@ -33,13 +31,35 @@ function setup() {
 	engine = Engine.create();
 	world = engine.world;
 
-	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.5, isStatic:true});
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.4, isStatic:true});
 	World.add(world, packageBody);
 	
 
 	//Create a Ground
 	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
  	World.add(world, ground);
+
+ 	boxPosition=width/2-100
+ 	boxY=610;
+
+
+ 	boxleftSprite=createSprite(boxPosition, boxY, 20,100);
+ 	boxleftSprite.shapeColor=color(255,0,0);
+
+ 	boxLeftBody = Bodies.rectangle(boxPosition+20, boxY, 20,100 , {isStatic:true} );
+ 	World.add(world, boxLeftBody);
+
+ 	boxBase=createSprite(boxPosition+100, boxY+40, 200,20);
+ 	boxBase.shapeColor=color(255,0,0);
+
+ 	boxBottomBody = Bodies.rectangle(boxPosition+100, boxY+45-20, 200,20 , {isStatic:true} );
+ 	World.add(world, boxBottomBody);
+
+ 	boxleftSprite=createSprite(boxPosition+200 , boxY, 20,100);
+ 	boxleftSprite.shapeColor=color(255,0,0);
+
+ 	boxRightBody = Bodies.rectangle(boxPosition+200-20 , boxY, 20,100 , {isStatic:true} );
+ 	World.add(world, boxRightBody);
 
 
 	Engine.run(engine);
@@ -50,23 +70,44 @@ function setup() {
 function draw() {
   rectMode(CENTER);
   background(0);
-  packageSprite.x= packageBody.position.x 
-  packageSprite.y= packageBody.position.y 
-  
-  //Matter.Body.setStatic(false);
+ 
+  packageSprite.x = packageBody.position.x 
+  packageSprite.y = packageBody.position.y 
 
-  //console.log(packageSprite);
+  packageSprite.x = helicopterSprite.x;
+  packageSprite.y = helicopterSprite.y;
+
+  if(keyDown("RIGHTARROW")){
+	packageSprite.x = packageSprite.x + 5;
+	helicopterSprite.x = helicopterSprite.x + 5;
+
+  }
+
+  if(keyDown("LEFT ARROW")){
+	packageSprite.x = packageSprite.x - 5;
+	helicopterSprite.x = helicopterSprite.x - 5;
+
+  }
 
   
   drawSprites();
- 
 }
 
 function keyPressed() {
- if (keyCode === DOWN_ARROW) {
-	Matter.Body.setStatic(packageBody,false);
-    }
+	if (keyCode === DOWN_ARROW) {
+	   Matter.Body.setStatic(packageBody,false);
+	   }
+   
+   
+
+	if (keyCode === RIGHT_ARROW){
+		helicopterSprite.x = helicopterSprite.x + 15;
+
+  }
+   
+    else if(keyCode === LEFT_ARROW ){
+		helicopterSprite.x = helicopterSprite.x - 15;
+
+  }
 }
-
-
 
